@@ -1,1 +1,1515 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPMB - SMKN 1 Aimere</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f6f9;
+        }
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #059669;
+        }
+        /* Stisla card styles */
+        .card-shadow {
+            box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
+        }
+        .card-shadow-bold {
+            box-shadow: 0 10px 30px 0 rgba(16, 185, 129, 0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased min-h-screen flex flex-col">
 
+    <!-- Thumbnail Blogger Tersembunyi -->
+    <div style="display:none;">
+        <img src="https://placehold.co/600x400/10b981/ffffff?text=SPMB+SMKN+1+Aimere" alt="SPMB SMKN 1 Aimere">
+    </div>
+
+    <script>
+        // ================= KONFIGURASI APLIKASI =================
+        // UBAH IS_PREVIEW KE false JIKA AKAN DI-DEPLOY KE LIVE BLOGGER
+        const IS_PREVIEW = false;
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbwoOJOC8SqEtBZI9wjSDxoO0DDch_hg1do4wMsA1LLPKn2zh4Pfe7fIJM_IGEAN6UpA/exec";
+        // ========================================================
+    </script>
+
+    <script>
+        // Database Lokal Sementara (Local Storage) untuk mode preview
+        const DEFAULT_MOCK_DATA = [
+            {
+                "id": "SPMB-2026-0001",
+                "jurusan": "Agribisnis Tanaman Pangan dan Hortikultura",
+                "nama": "Ahmad Dani Wijaya",
+                "smp": "SMP Negeri 1 Aimere",
+                "nisn": "0081234567",
+                "nik": "5312011234560001",
+                "tempat_lahir": "Aimere",
+                "tanggal_lahir": "2010-05-12",
+                "gender": "Laki-laki",
+                "agama": "Katolik",
+                "darah": "O",
+                "tinggi": "168",
+                "berat": "55",
+                "domisili": "Jl. Trans Flores No. 22, Aimere",
+                "ayah": "Yoseph Raya",
+                "pekerjaan_ayah": "Petani",
+                "ibu": "Maria Goreti",
+                "pekerjaan_ibu": "Ibu Rumah Tangga",
+                "telpon": "081234567890",
+                "alamat_ortu": "Kec. Aimere, Kabupaten Ngada",
+                "hobi": "Membaca & Berkebun",
+                "asrama": "Ya",
+                "status": "Diterima",
+                "tanggal_daftar": "2026-05-24 10:15:30"
+            },
+            {
+                "id": "SPMB-2026-0002",
+                "jurusan": "Agribisnis Ternak Ruminansia",
+                "nama": "Theresia Avila Siga",
+                "smp": "SMP Katolik Aimere",
+                "nisn": "0097654321",
+                "nik": "5312019876540002",
+                "tempat_lahir": "Bajawa",
+                "tanggal_lahir": "2010-09-20",
+                "gender": "Perempuan",
+                "agama": "Katolik",
+                "darah": "A",
+                "tinggi": "160",
+                "berat": "48",
+                "domisili": "Asrama Putri SMKN 1 Aimere",
+                "ayah": "Fransiskus Dhosa",
+                "pekerjaan_ayah": "PNS",
+                "ibu": "Elisabeth Lali",
+                "pekerjaan_ibu": "Guru",
+                "telpon": "082144556677",
+                "alamat_ortu": "Jl. El Tari No. 15, Bajawa",
+                "hobi": "Menyanyi & Memelihara Ternak",
+                "asrama": "Ya",
+                "status": "Pending",
+                "tanggal_daftar": "2026-05-25 08:30:00"
+            }
+        ];
+
+        // Inisialisasi mock database di local storage jika kosong
+        if (!localStorage.getItem('spmb_db')) {
+            localStorage.setItem('spmb_db', JSON.stringify(DEFAULT_MOCK_DATA));
+        }
+    </script>
+
+    <!-- Header/Navbar (Layout Horizontal Hijau-Biru Segar) -->
+    <header class="bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3.5 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white p-2 rounded-xl shadow-md flex items-center justify-center">
+                    <i class="fa-solid fa-graduation-cap text-2xl text-emerald-600"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-xl tracking-tight leading-tight">SPMB ONLINE</h1>
+                    <p class="text-xs text-green-100 font-semibold">SMKN 1 AIMERE</p>
+                </div>
+            </div>
+            
+            <!-- Mobile Toggle Menu Button -->
+            <button onclick="toggleMobileMenu()" class="md:hidden text-white hover:text-green-200 focus:outline-none">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+
+            <!-- Navigation Menu -->
+            <nav id="nav-menu" class="hidden md:flex flex-col md:flex-row w-full md:w-auto mt-3 md:mt-0 space-y-2 md:space-y-0 md:space-x-2 text-sm font-semibold">
+                <button onclick="switchView('view-beranda')" class="nav-btn bg-white/15 hover:bg-white/30 px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 text-white">
+                    <i class="fa-solid fa-house"></i> <span>Beranda</span>
+                </button>
+                <button onclick="switchView('view-daftar')" class="nav-btn bg-white/15 hover:bg-white/30 px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 text-white">
+                    <i class="fa-solid fa-file-pen"></i> <span>Formulir Daftar</span>
+                </button>
+                <button onclick="switchView('view-status')" class="nav-btn bg-white/15 hover:bg-white/30 px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 text-white">
+                    <i class="fa-solid fa-circle-info"></i> <span>Cek Status</span>
+                </button>
+                <button onclick="openLoginModal()" id="btn-login-trigger" class="bg-yellow-500 hover:bg-yellow-400 text-slate-900 px-4 py-2 rounded-lg shadow-md transition-all duration-200 flex items-center space-x-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> <span>Portal Admin</span>
+                </button>
+                <button onclick="logoutAdmin()" id="btn-logout" class="hidden bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-lg shadow-md transition-all duration-200 flex items-center space-x-2">
+                    <i class="fa-solid fa-power-off"></i> <span>Keluar Admin</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Info Badge Preview Mode (Oranye Khas) -->
+    <div id="preview-badge" class="bg-amber-500 text-amber-950 px-4 py-1.5 text-center text-xs font-bold shadow-inner flex items-center justify-center space-x-2">
+        <i class="fa-solid fa-triangle-exclamation animate-pulse"></i>
+        <span>SISTEM BERJALAN DALAM MODE PREVIEW (Data disimpan lokal di Browser Anda). Ubah <b>IS_PREVIEW = false</b> untuk menghubungkan Google Sheet.</span>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow container mx-auto px-4 py-6 max-w-7xl">
+
+        <!-- ================= VIEW 1: BERANDA / HOME ================= -->
+        <section id="view-beranda" class="view-section space-y-8 animate-fadeIn">
+            <!-- Hero Banner Sektor Pertanian & Peternakan Unggulan -->
+            <div class="bg-gradient-to-br from-emerald-600 to-blue-700 rounded-3xl p-6 md:p-12 text-white card-shadow-bold relative overflow-hidden">
+                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+                <div class="absolute -left-10 -top-10 w-60 h-60 bg-green-400/20 rounded-full blur-2xl"></div>
+                
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <span class="bg-yellow-400 text-slate-900 font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Tahun Ajaran 2026/2027</span>
+                    <h2 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">Penerimaan Murid Baru Sektor Pertanian, Peternakan & Kejuruan Unggulan</h2>
+                    <p class="text-sm md:text-base text-emerald-100 font-medium leading-relaxed">
+                        Mari kembangkan potensi diri Anda di SMKN 1 Aimere. Menghasilkan tenaga ahli kompeten, siap kerja, dan berwirausaha mandiri di bidang teknologi pertanian modern, peternakan berkualitas, otomotif, serta rekayasa perumahan.
+                    </p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="switchView('view-daftar')" class="bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-bold px-6 py-3 rounded-xl shadow-lg transition-transform hover:-translate-y-1 text-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-file-invoice"></i> <span>Daftar Sekarang</span>
+                        </button>
+                        <button onclick="switchView('view-status')" class="bg-white/20 hover:bg-white/30 text-white font-bold px-6 py-3 rounded-xl border border-white/30 transition-transform hover:-translate-y-1 text-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-magnifying-glass"></i> <span>Cek Status Kelulusan</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jurusan Unggulan Grid (7 Jurusan Lengkap) -->
+            <div class="space-y-4">
+                <h3 class="text-xl md:text-2xl font-black text-slate-800 flex items-center space-x-2">
+                    <span class="w-2.5 h-6 bg-emerald-600 rounded-full inline-block"></span>
+                    <span>Jurusan / Kompetensi Keahlian Unggulan</span>
+                </h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Jurusan 1: Agribisnis Tanaman Pangan dan Hortikultura -->
+                    <div class="bg-white rounded-2xl p-6 border-l-8 border-emerald-500 card-shadow hover:scale-[1.02] transition-transform duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="w-11 h-11 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-4">
+                                <i class="fa-solid fa-seedling text-xl"></i>
+                            </div>
+                            <h4 class="text-base font-extrabold text-slate-900 leading-snug">Agribisnis Tanaman Pangan dan Hortikultura</h4>
+                            <p class="text-[10px] text-emerald-600 font-bold mt-1 uppercase tracking-wider">Sektor Pertanian Modern</p>
+                            <p class="text-xs text-gray-600 mt-2.5 leading-relaxed">
+                                Mempelajari teknologi budidaya tanaman pangan, hortikultura, hidroponik kreatif, pemupukan organik, dan manajemen agribisnis bernilai tinggi.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center bg-gray-50 p-2.5 rounded-xl">
+                            <span class="text-[10px] font-bold text-gray-500"><i class="fa-solid fa-user-group text-emerald-600 mr-1"></i> Kuota: 36 Siswa</span>
+                            <span class="text-[10px] font-bold text-emerald-600"><i class="fa-solid fa-circle-check"></i> Tersedia Asrama</span>
+                        </div>
+                    </div>
+
+                    <!-- Jurusan 2: Desain Komunikasi dan Visual -->
+                    <div class="bg-white rounded-2xl p-6 border-l-8 border-violet-500 card-shadow hover:scale-[1.02] transition-transform duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="w-11 h-11 bg-violet-100 rounded-xl flex items-center justify-center text-violet-600 mb-4">
+                                <i class="fa-solid fa-palette text-xl"></i>
+                            </div>
+                            <h4 class="text-base font-extrabold text-slate-900 leading-snug">Desain Komunikasi dan Visual</h4>
+                            <p class="text-[10px] text-violet-600 font-bold mt-1 uppercase tracking-wider">Sektor Kreatif & Media Digital</p>
+                            <p class="text-xs text-gray-600 mt-2.5 leading-relaxed">
+                                Mempelajari desain grafis, ilustrasi, fotografi, videografi, periklanan, penyiaran, serta penguasaan software multimedia modern.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center bg-gray-50 p-2.5 rounded-xl">
+                            <span class="text-[10px] font-bold text-gray-500"><i class="fa-solid fa-user-group text-violet-600 mr-1"></i> Kuota: 36 Siswa</span>
+                            <span class="text-[10px] font-bold text-violet-600"><i class="fa-solid fa-circle-check"></i> Tersedia Asrama</span>
+                        </div>
+                    </div>
+
+                    <!-- Jurusan 3: Teknik Kendaraan Ringan Otomotif -->
+                    <div class="bg-white rounded-2xl p-6 border-l-8 border-blue-600 card-shadow hover:scale-[1.02] transition-transform duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="w-11 h-11 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-4">
+                                <i class="fa-solid fa-car-side text-xl"></i>
+                            </div>
+                            <h4 class="text-base font-extrabold text-slate-900 leading-snug">Teknik Kendaraan Ringan Otomotif</h4>
+                            <p class="text-[10px] text-blue-600 font-bold mt-1 uppercase tracking-wider">Sektor Teknik & Industri</p>
+                            <p class="text-xs text-gray-600 mt-2.5 leading-relaxed">
+                                Mempelajari perawatan mesin mobil, sistem pemindah tenaga, kelistrikan otomotif, chasis, dan teknologi kendaraan masa depan.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center bg-gray-50 p-2.5 rounded-xl">
+                            <span class="text-[10px] font-bold text-gray-500"><i class="fa-solid fa-user-group text-blue-600 mr-1"></i> Kuota: 36 Siswa</span>
+                            <span class="text-[10px] font-bold text-blue-600"><i class="fa-solid fa-circle-check"></i> Tersedia Asrama</span>
+                        </div>
+                    </div>
+
+                    <!-- Jurusan 4: Agribisnis Ternak Ruminansia -->
+                    <div class="bg-white rounded-2xl p-6 border-l-8 border-amber-600 card-shadow hover:scale-[1.02] transition-transform duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="w-11 h-11 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 mb-4">
+                                <i class="fa-solid fa-cow text-xl"></i>
+                            </div>
+                            <h4 class="text-base font-extrabold text-slate-900 leading-snug">Agribisnis Ternak Ruminansia</h4>
+                            <p class="text-[10px] text-amber-600 font-bold mt-1 uppercase tracking-wider">Sektor Peternakan Terpadu</p>
+                            <p class="text-xs text-gray-600 mt-2.5 leading-relaxed">
+                                Mempelajari pemeliharaan ternak besar/kecil (sapi, kambing, domba, babi), pengolahan pakan ternak, dan wirausaha peternakan ruminansia.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center bg-gray-50 p-2.5 rounded-xl">
+                            <span class="text-[10px] font-bold text-gray-500"><i class="fa-solid fa-user-group text-amber-600 mr-1"></i> Kuota: 36 Siswa</span>
+                            <span class="text-[10px] font-bold text-amber-600"><i class="fa-solid fa-circle-check"></i> Tersedia Asrama</span>
+                        </div>
+                    </div>
+
+                    <!-- Jurusan 5: Agribisnis Tanaman Perkebunan -->
+                    <div class="bg-white rounded-2xl p-6 border-l-8 border-green-600 card-shadow hover:scale-[1.02] transition-transform duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="w-11 h-11 bg-green-100 rounded-xl flex items-center justify-center text-green-600 mb-4">
+                                <i class="fa-solid fa-leaf text-xl"></i>
+                            </div>
+                            <h4 class="text-base font-extrabold text-slate-900 leading-snug">Agribisnis Tanaman Perkebunan</h4>
+                            <p class="text-[10px] text-green-600 font-bold mt-1 uppercase tracking-wider">Sektor Perkebunan Lestari</p>
+                            <p class="text-xs text-gray-600 mt-2.5 leading-relaxed">
+                                Mempelajari budidaya dan pengolahan hasil perkebunan (kopi, kelapa, kakao, dll) yang berkelanjutan dan ramah lingkungan.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center bg-gray-50 p-2.5 rounded-xl">
+                            <span class="text-[10px] font-bold text-gray-500"><i class="fa-solid fa-user-group text-green-600 mr-1"></i> Kuota: 36 Siswa</span>
+                            <span class="text-[10px] font-bold text-green-600"><i class="fa-solid fa-circle-check"></i> Tersedia Asrama</span>
+                        </div>
+                    </div>
+
+                    <!-- Jurusan 6: Teknik Konstruksi dan Perumahan -->
+                    <div class="bg-white rounded-2xl p-6 border-l-8 border-teal-600 card-shadow hover:scale-[1.02] transition-transform duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="w-11 h-11 bg-teal-100 rounded-xl flex items-center justify-center text-teal-600 mb-4">
+                                <i class="fa-solid fa-trowel-bricks text-xl"></i>
+                            </div>
+                            <h4 class="text-base font-extrabold text-slate-900 leading-snug">Teknik Konstruksi dan Perumahan</h4>
+                            <p class="text-[10px] text-teal-600 font-bold mt-1 uppercase tracking-wider">Sektor Pembangunan & Real Estate</p>
+                            <p class="text-xs text-gray-600 mt-2.5 leading-relaxed">
+                                Mempelajari ilmu rancang bangunan, estimasi anggaran proyek konstruksi, teknik perumahan, serta pengerjaan struktur beton dan kayu.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center bg-gray-50 p-2.5 rounded-xl">
+                            <span class="text-[10px] font-bold text-gray-500"><i class="fa-solid fa-user-group text-teal-600 mr-1"></i> Kuota: 36 Siswa</span>
+                            <span class="text-[10px] font-bold text-teal-600"><i class="fa-solid fa-circle-check"></i> Tersedia Asrama</span>
+                        </div>
+                    </div>
+
+                    <!-- Jurusan 7: Agribisnis Ternak Unggas -->
+                    <div class="bg-white rounded-2xl p-6 border-l-8 border-sky-500 card-shadow hover:scale-[1.02] transition-transform duration-300 flex flex-col justify-between md:col-span-2 lg:col-span-1">
+                        <div>
+                            <div class="w-11 h-11 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600 mb-4">
+                                <i class="fa-solid fa-feather text-xl"></i>
+                            </div>
+                            <h4 class="text-base font-extrabold text-slate-900 leading-snug">Agribisnis Ternak Unggas</h4>
+                            <p class="text-[10px] text-sky-600 font-bold mt-1 uppercase tracking-wider">Sektor Peternakan Unggas</p>
+                            <p class="text-xs text-gray-600 mt-2.5 leading-relaxed">
+                                Mempelajari pembibitan unggas, formulasi ransum pakan nutrisi tinggi, kesehatan unggas, manajemen kandang modern, dan pengolahan hasil ternak unggas.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center bg-gray-50 p-2.5 rounded-xl">
+                            <span class="text-[10px] font-bold text-gray-500"><i class="fa-solid fa-user-group text-sky-600 mr-1"></i> Kuota: 36 Siswa</span>
+                            <span class="text-[10px] font-bold text-sky-600"><i class="fa-solid fa-circle-check"></i> Tersedia Asrama</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alur Pendaftaran -->
+            <div class="bg-white rounded-3xl p-6 md:p-8 card-shadow space-y-6">
+                <h3 class="text-xl md:text-2xl font-black text-slate-800 text-center">Alur Pendaftaran Mudah & Cepat</h3>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+                    <!-- Step 1 -->
+                    <div class="text-center space-y-2 relative">
+                        <div class="w-16 h-16 bg-emerald-600 text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-md">1</div>
+                        <h4 class="font-extrabold text-slate-900 text-sm">Isi Formulir</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed px-4">Lengkapi data diri, akademik, dan orang tua melalui halaman form pendaftaran.</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="text-center space-y-2">
+                        <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-md">2</div>
+                        <h4 class="font-extrabold text-slate-900 text-sm">Simpan Kode</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed px-4">Simpan Kode Pendaftaran unik yang didapatkan untuk memantau status.</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="text-center space-y-2">
+                        <div class="w-16 h-16 bg-yellow-500 text-slate-900 rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-md">3</div>
+                        <h4 class="font-extrabold text-slate-900 text-sm">Verifikasi Panitia</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed px-4">Panitia SPMB akan meninjau kelayakan data dan berkas calon peserta didik baru.</p>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="text-center space-y-2">
+                        <div class="w-16 h-16 bg-emerald-500 text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-md">4</div>
+                        <h4 class="font-extrabold text-slate-900 text-sm">Hasil Seleksi</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed px-4">Pantau hasil seleksi kelulusan langsung secara berkala di halaman Cek Status.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jadwal Penting, Kontak Panitia, & Peta Lokasi -->
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Column 1 & 2: Jadwal & Peta Lokasi -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Jadwal Penting -->
+                    <div class="bg-white rounded-3xl p-6 md:p-8 card-shadow space-y-4">
+                        <h3 class="text-lg md:text-xl font-black text-slate-800 flex items-center space-x-2">
+                            <span class="w-2.5 h-6 bg-amber-500 rounded-full inline-block"></span>
+                            <span>📅 Jadwal Penting Penerimaan (TA 2026/2027)</span>
+                        </h3>
+                        <div class="divide-y divide-gray-100">
+                            <div class="py-3 flex justify-between items-center">
+                                <div>
+                                    <h5 class="font-extrabold text-slate-900 text-sm">Pendaftaran Gelombang I</h5>
+                                    <p class="text-xs text-gray-500">Pendaftaran online & penyerahan berkas fisik</p>
+                                </div>
+                                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full text-right shrink-0">1 Mar - 30 Apr 2026</span>
+                            </div>
+                            <div class="py-3 flex justify-between items-center">
+                                <div>
+                                    <h5 class="font-extrabold text-slate-900 text-sm">Seleksi Administrasi & Wawancara</h5>
+                                    <p class="text-xs text-gray-500">Pengujian kompetensi minat & bakat calon siswa</p>
+                                </div>
+                                <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full text-right shrink-0">2 - 5 Mei 2026</span>
+                            </div>
+                            <div class="py-3 flex justify-between items-center">
+                                <div>
+                                    <h5 class="font-extrabold text-slate-900 text-sm">Pengumuman Kelulusan Gelombang I</h5>
+                                    <p class="text-xs text-gray-500">Mengecek hasil kelulusan di halaman status</p>
+                                </div>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full text-right shrink-0">10 Mei 2026</span>
+                            </div>
+                            <div class="py-3 flex justify-between items-center">
+                                <div>
+                                    <h5 class="font-extrabold text-slate-900 text-sm">Pendaftaran Gelombang II</h5>
+                                    <p class="text-xs text-gray-500">Dibuka khusus apabila kuota belum terpenuhi</p>
+                                </div>
+                                <span class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full text-right shrink-0">15 Mei - 30 Jun 2026</span>
+                            </div>
+                            <div class="py-3 flex justify-between items-center">
+                                <div>
+                                    <h5 class="font-extrabold text-slate-900 text-sm">Mulai Kegiatan MPLS & Masuk Asrama</h5>
+                                    <p class="text-xs text-gray-500">Persiapan siswa baru dan pengenalan lingkungan sekolah</p>
+                                </div>
+                                <span class="bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full text-right shrink-0">13 Juli 2026</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map Alamat Sekolah -->
+                    <div class="bg-white rounded-3xl p-6 md:p-8 card-shadow space-y-4">
+                        <h3 class="text-lg md:text-xl font-black text-slate-800 flex items-center space-x-2">
+                            <span class="w-2.5 h-6 bg-blue-600 rounded-full inline-block"></span>
+                            <span>📍 Lokasi Kampus SMKN 1 Aimere</span>
+                        </h3>
+                        <p class="text-xs text-gray-500 font-semibold">
+                            <i class="fa-solid fa-map-location-dot text-emerald-600 mr-1"></i>
+                            Jl. Trans Flores, Aimere, Kabupaten Ngada, Nusa Tenggara Timur (NTT).
+                        </p>
+                        <div class="rounded-2xl overflow-hidden border-2 border-gray-100 card-shadow h-72">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126131.79246197143!2d120.80373079999999!3d-8.822836249999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2db3390022ff7fdf%3A0xf659b8be923838eb!2sAimere%2C%20Ngada%20Regency%2C%20East%20Nusa%20Tenggara!5e0!3m2!1sen!2sid!4v1716611000000" class="w-full h-full border-0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 3: Kontak Panitia Resmi (4 Orang) -->
+                <div class="bg-white rounded-3xl p-6 md:p-8 card-shadow space-y-6 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg md:text-xl font-black text-slate-800 flex items-center space-x-2 mb-4">
+                            <span class="w-2.5 h-6 bg-emerald-600 rounded-full inline-block"></span>
+                            <span>Hubungi Panitia (WhatsApp)</span>
+                        </h3>
+                        <p class="text-xs text-gray-500 leading-relaxed mb-6 font-medium">
+                            Ada pertanyaan seputar asrama, pendaftaran, persyaratan berkas, atau kurikulum program keahlian pertanian/peternakan/teknologi? Klik tombol kontak berikut:
+                        </p>
+
+                        <!-- Panitia Cards Grid -->
+                        <div class="space-y-4">
+                            <!-- Panitia 1 -->
+                            <a href="https://wa.me/6281234567890?text=Halo%20Pak%20Yoseph%20Raya%2C%20saya%20calon%20pendaftar%20SMKN%201%20Aimere%20ingin%20bertanya%20seputar%20alur%20pendaftaran." target="_blank" class="flex items-center space-x-3 p-3 bg-emerald-50 hover:bg-emerald-100/80 rounded-2xl border border-emerald-100 transition-all group">
+                                <div class="w-10 h-10 bg-emerald-600 text-white rounded-xl flex items-center justify-center text-lg shrink-0 shadow-md group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                </div>
+                                <div class="flex-grow min-w-0">
+                                    <h5 class="font-extrabold text-slate-900 text-xs truncate">Pak Yoseph Raya, S.Pd.</h5>
+                                    <p class="text-[10px] text-emerald-700 font-bold">Ketua Panitia SPMB</p>
+                                </div>
+                                <div class="text-emerald-600 text-lg pr-1">
+                                    <i class="fa-brands fa-whatsapp animate-pulse"></i>
+                                </div>
+                            </a>
+
+                            <!-- Panitia 2 -->
+                            <a href="https://wa.me/6282144556677?text=Halo%20Ibu%20Maria%20Goreti%2C%20saya%20ingin%20bertanya%20mengenai%20kelengkapan%20dokumen/berkas%20persyaratan%20di%20SMKN%201%20Aimere." target="_blank" class="flex items-center space-x-3 p-3 bg-emerald-50 hover:bg-emerald-100/80 rounded-2xl border border-emerald-100 transition-all group">
+                                <div class="w-10 h-10 bg-emerald-600 text-white rounded-xl flex items-center justify-center text-lg shrink-0 shadow-md group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid fa-file-invoice"></i>
+                                </div>
+                                <div class="flex-grow min-w-0">
+                                    <h5 class="font-extrabold text-slate-900 text-xs truncate">Ibu Maria Goreti, S.Si.</h5>
+                                    <p class="text-[10px] text-emerald-700 font-bold">Sekretaris & Berkas</p>
+                                </div>
+                                <div class="text-emerald-600 text-lg pr-1">
+                                    <i class="fa-brands fa-whatsapp animate-pulse"></i>
+                                </div>
+                            </a>
+
+                            <!-- Panitia 3 -->
+                            <a href="https://wa.me/6281339887766?text=Halo%20Pak%20Fransiskus%20Dhosa%2C%20saya%20ingin%20bertanya%20seputar%20praktik%20jurusan%20Pertanian%20di%20SMKN%201%20Aimere." target="_blank" class="flex items-center space-x-3 p-3 bg-blue-50 hover:bg-blue-100/80 rounded-2xl border border-blue-100 transition-all group">
+                                <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg shrink-0 shadow-md group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid fa-leaf"></i>
+                                </div>
+                                <div class="flex-grow min-w-0">
+                                    <h5 class="font-extrabold text-slate-900 text-xs truncate">Pak Fransiskus Dhosa, S.P.</h5>
+                                    <p class="text-[10px] text-blue-700 font-bold">Kaprog Pertanian Modern</p>
+                                </div>
+                                <div class="text-blue-600 text-lg pr-1">
+                                    <i class="fa-brands fa-whatsapp animate-pulse"></i>
+                                </div>
+                            </a>
+
+                            <!-- Panitia 4 -->
+                            <a href="https://wa.me/6281299001122?text=Halo%20Ibu%20Elisabeth%20Lali%2C%20saya%20ingin%20bertanya%20tentang%20jurusan%20Peternakan%20atau%20pembagian%20asrama%20di%20SMKN%201%20Aimere." target="_blank" class="flex items-center space-x-3 p-3 bg-purple-50 hover:bg-purple-100/80 rounded-2xl border border-purple-100 transition-all group">
+                                <div class="w-10 h-10 bg-purple-600 text-white rounded-xl flex items-center justify-center text-lg shrink-0 shadow-md group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid fa-hotel"></i>
+                                </div>
+                                <div class="flex-grow min-w-0">
+                                    <h5 class="font-extrabold text-slate-900 text-xs truncate">Ibu Elisabeth Lali, S.Pt.</h5>
+                                    <p class="text-[10px] text-purple-700 font-bold">Kaprog Peternakan & Asrama</p>
+                                </div>
+                                <div class="text-purple-600 text-lg pr-1">
+                                    <i class="fa-brands fa-whatsapp animate-pulse"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Jam Layanan Slogan -->
+                    <div class="mt-6 p-4 bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-2xl text-center space-y-1">
+                        <h6 class="font-black text-xs uppercase tracking-wider">Layanan Cepat & Ramah</h6>
+                        <p class="text-[10px] opacity-90 font-semibold">Senin - Sabtu (08.00 s/d 15.00 WITA)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 2: FORMULIR PENDAFTARAN (24 FIELDS) ================= -->
+        <section id="view-daftar" class="view-section hidden space-y-6 animate-fadeIn">
+            <div class="bg-white rounded-3xl p-6 md:p-10 card-shadow border border-gray-100">
+                <div class="border-b-4 border-emerald-500 pb-4 mb-8">
+                    <h3 class="text-2xl md:text-3xl font-black text-slate-900 flex items-center space-x-3">
+                        <i class="fa-solid fa-file-signature text-emerald-600"></i>
+                        <span>Formulir Pendaftaran Siswa Baru</span>
+                    </h3>
+                    <p class="text-sm text-gray-500 font-medium mt-1">Lengkapi 24 butir isian data wajib di bawah ini secara teliti dan benar.</p>
+                </div>
+
+                <!-- FORM PEMENANG -->
+                <form id="form-pendaftaran" onsubmit="handleRegistrationSubmit(event)" class="space-y-8">
+                    
+                    <!-- KATEGORI A: PILIHAN JURUSAN & FASILITAS -->
+                    <div class="bg-emerald-50/50 rounded-2xl p-6 border-l-4 border-emerald-600 space-y-4">
+                        <h4 class="font-extrabold text-emerald-800 text-base flex items-center space-x-2">
+                            <i class="fa-solid fa-compass"></i> <span>A. PEMILIHAN PROGRAM STUDI & ASRAMA</span>
+                        </h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <!-- Input 1: Pilih Jurusan (7 Pilihan Jurusan) -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Pilih Jurusan <span class="text-rose-500">*</span></label>
+                                <select name="jurusan" required class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-emerald-500 focus:ring-0 outline-none transition bg-white text-sm font-semibold text-slate-800">
+                                    <option value="" disabled selected>-- Pilih Kompetensi Keahlian --</option>
+                                    <option value="Agribisnis Tanaman Pangan dan Hortikultura">Agribisnis Tanaman Pangan dan Hortikultura</option>
+                                    <option value="Desain Komunikasi dan Visual">Desain Komunikasi dan Visual</option>
+                                    <option value="Teknik Kendaraan Ringan Otomotif">Teknik Kendaraan Ringan Otomotif</option>
+                                    <option value="Agribisnis Ternak Ruminansia">Agribisnis Ternak Ruminansia</option>
+                                    <option value="Agribisnis Tanaman Perkebunan">Agribisnis Tanaman Perkebunan</option>
+                                    <option value="Teknik Konstruksi dan Perumahan">Teknik Konstruksi dan Perumahan</option>
+                                    <option value="Agribisnis Ternak Unggas">Agribisnis Ternak Unggas</option>
+                                </select>
+                            </div>
+                            <!-- Input 2: Pilih Asrama -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Pilih Tinggal di Asrama? <span class="text-rose-500">*</span></label>
+                                <select name="asrama" required class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-emerald-500 focus:ring-0 outline-none transition bg-white text-sm font-semibold">
+                                    <option value="" disabled selected>-- Konfirmasi Asrama --</option>
+                                    <option value="Ya">Ya (Tinggal di Asrama Sekolah)</option>
+                                    <option value="Tidak">Tidak (Tinggal di luar / Pulang Pergi)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KATEGORI B: DATA DIRI CALON MAHASISWA -->
+                    <div class="bg-blue-50/40 rounded-2xl p-6 border-l-4 border-blue-600 space-y-4">
+                        <h4 class="font-extrabold text-blue-800 text-base flex items-center space-x-2">
+                            <i class="fa-solid fa-user-check"></i> <span>B. DATA DIRI CALON SISWA</span>
+                        </h4>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Input 3: Nama Lengkap -->
+                            <div class="space-y-1.5 md:col-span-2">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Nama Lengkap <span class="text-rose-500">*</span></label>
+                                <input type="text" name="nama" required placeholder="Sesuai Ijazah / Akta Kelahiran" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                            </div>
+                            <!-- Input 4: NISN -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">NISN <span class="text-rose-500">*</span></label>
+                                <input type="number" name="nisn" required placeholder="10 Digit Angka" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                            </div>
+                            <!-- Input 5: NIK -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">NIK (No. KTP/KK) <span class="text-rose-500">*</span></label>
+                                <input type="number" name="nik" required placeholder="16 Digit Angka" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                            </div>
+                            <!-- Input 6: Tempat Lahir -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Tempat Lahir <span class="text-rose-500">*</span></label>
+                                <input type="text" name="tempat_lahir" required placeholder="Kota/Kabupaten" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                            </div>
+                            <!-- Input 7: Tanggal Lahir -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Tanggal Lahir <span class="text-rose-500">*</span></label>
+                                <input type="date" name="tanggal_lahir" required class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                            </div>
+                            <!-- Input 8: Jenis Kelamin -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Jenis Kelamin <span class="text-rose-500">*</span></label>
+                                <select name="gender" required class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-0 outline-none transition bg-white text-sm font-semibold">
+                                    <option value="" disabled selected>-- Pilih --</option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            <!-- Input 9: Agama -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Agama <span class="text-rose-500">*</span></label>
+                                <select name="agama" required class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-0 outline-none transition bg-white text-sm font-semibold">
+                                    <option value="" disabled selected>-- Pilih Agama --</option>
+                                    <option value="Katolik">Katolik</option>
+                                    <option value="Kristen Protestan">Kristen Protestan</option>
+                                    <option value="Islam">Islam</option>
+                                    <option value="Hindu">Hindu</option>
+                                    <option value="Buddha">Buddha</option>
+                                    <option value="Konghucu">Konghucu</option>
+                                </select>
+                            </div>
+                            <!-- Input 10: Golongan Darah -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Golongan Darah</label>
+                                <select name="darah" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-0 outline-none transition bg-white text-sm font-semibold">
+                                    <option value="Tidak Tahu" selected>Tidak Tahu</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="AB">AB</option>
+                                    <option value="O">O</option>
+                                </select>
+                            </div>
+                            <!-- Input 11: Tinggi Badan -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Tinggi Badan (cm) <span class="text-rose-500">*</span></label>
+                                <input type="number" name="tinggi" required placeholder="Contoh: 165" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                            </div>
+                            <!-- Input 12: Berat Badan -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Berat Badan (kg) <span class="text-rose-500">*</span></label>
+                                <input type="number" name="berat" required placeholder="Contoh: 50" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                            </div>
+                            <!-- Input 13: Hobi -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Hobi / Kegemaran <span class="text-rose-500">*</span></label>
+                                <input type="text" name="hobi" required placeholder="Contoh: Bersepeda, Membaca" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                            </div>
+                        </div>
+                        <!-- Input 14: Alamat Domisili Siswa -->
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-extrabold text-gray-700 block uppercase">Alamat Domisili (Tempat Tinggal Saat Bersekolah) <span class="text-rose-500">*</span></label>
+                            <textarea name="domisili" rows="2" required placeholder="Masukkan alamat lengkap RT/RW, Dusun, Desa, Kecamatan saat ini" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-0 outline-none transition text-sm font-semibold resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- KATEGORI C: DATA AKADEMIK / SEKOLAH ASAL -->
+                    <div class="bg-yellow-50/30 rounded-2xl p-6 border-l-4 border-yellow-500 space-y-4">
+                        <h4 class="font-extrabold text-amber-800 text-base flex items-center space-x-2">
+                            <i class="fa-solid fa-school"></i> <span>C. DATA SEKOLAH ASAL</span>
+                        </h4>
+                        <!-- Input 15: Nama SMP/MTs -->
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-extrabold text-gray-700 block uppercase">Nama SMP / MTs Asal <span class="text-rose-500">*</span></label>
+                            <input type="text" name="smp" required placeholder="Contoh: SMP Negeri 1 Aimere atau SMPK Katolik" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-amber-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                        </div>
+                    </div>
+
+                    <!-- KATEGORI D: DATA ORANG TUA / WALI -->
+                    <div class="bg-purple-50/30 rounded-2xl p-6 border-l-4 border-purple-600 space-y-4">
+                        <h4 class="font-extrabold text-purple-800 text-base flex items-center space-x-2">
+                            <i class="fa-solid fa-users"></i> <span>D. DATA ORANG TUA KANDUNG</span>
+                        </h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <!-- Input 16: Nama Ayah Kandung -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Nama Lengkap Ayah Kandung <span class="text-rose-500">*</span></label>
+                                <input type="text" name="ayah" required placeholder="Nama Ayah Kandung" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                            </div>
+                            <!-- Input 17: Pekerjaan Ayah Kandung -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Pekerjaan Ayah Kandung <span class="text-rose-500">*</span></label>
+                                <input type="text" name="pekerjaan_ayah" required placeholder="Contoh: Petani, Wiraswasta, PNS" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                            </div>
+                            <!-- Input 18: Nama Ibu Kandung -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Nama Lengkap Ibu Kandung <span class="text-rose-500">*</span></label>
+                                <input type="text" name="ibu" required placeholder="Nama Lengkap Ibu Kandung" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                            </div>
+                            <!-- Input 19: Pekerjaan Ibu Kandung -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">Pekerjaan Ibu Kandung <span class="text-rose-500">*</span></label>
+                                <input type="text" name="pekerjaan_ibu" required placeholder="Contoh: Ibu Rumah Tangga, PNS, Pedagang" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                            </div>
+                            <!-- Input 20: No Telpon / WA Orang Tua -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-extrabold text-gray-700 block uppercase">No. Telpon / WA Aktif <span class="text-rose-500">*</span></label>
+                                <input type="number" name="telpon" required placeholder="Contoh: 081234567890" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-0 outline-none transition text-sm font-semibold">
+                            </div>
+                        </div>
+                        <!-- Input 21: Alamat Orang Tua -->
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-extrabold text-gray-700 block uppercase">Alamat Lengkap Orang Tua <span class="text-rose-500">*</span></label>
+                            <textarea name="alamat_ortu" rows="2" required placeholder="Masukkan alamat lengkap tempat tinggal orang tua saat ini" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-0 outline-none transition text-sm font-semibold resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Persetujuan -->
+                    <div class="p-4 bg-gray-50 rounded-2xl flex items-start space-x-3 border border-gray-200">
+                        <input type="checkbox" required id="check-confirm" class="w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 mt-0.5 cursor-pointer">
+                        <label for="check-confirm" class="text-xs font-bold text-gray-600 cursor-pointer select-none">
+                            Saya dengan kesadaran penuh menyatakan bahwa seluruh data yang saya isikan di atas adalah benar-benar sesuai dengan keadaan yang sebenarnya dan sanggup mematuhi tata tertib pendaftaran SMKN 1 Aimere.
+                        </label>
+                    </div>
+
+                    <!-- Tombol Aksi Form -->
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="reset" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-6 py-3 rounded-xl transition-colors text-sm">
+                            <i class="fa-solid fa-rotate-left mr-1"></i> Reset Form
+                        </button>
+                        <button type="submit" id="btn-submit-daftar" class="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:-translate-y-0.5 transition-all text-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-paper-plane"></i> <span>Kirim Pendaftaran</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 3: CEK STATUS KELULUSAN / KARTU ================= -->
+        <section id="view-status" class="view-section hidden space-y-6 animate-fadeIn">
+            <div class="max-w-2xl mx-auto bg-white rounded-3xl p-6 md:p-8 card-shadow border border-gray-100">
+                <div class="text-center space-y-2 mb-8">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-3xl flex items-center justify-center mx-auto text-2xl shadow-inner">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-950">Cek Status Hasil Seleksi</h3>
+                    <p class="text-xs text-gray-500 font-medium">Ketik NISN atau Kode Pendaftaran Anda untuk melacak status verifikasi.</p>
+                </div>
+
+                <!-- Input Pencarian -->
+                <div class="space-y-4">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                            <i class="fa-solid fa-id-card-clip"></i>
+                        </span>
+                        <input type="text" id="status-search-key" placeholder="Masukkan NISN atau Kode Pendaftaran" class="w-full pl-10 pr-4 py-3.5 rounded-2xl border-2 border-gray-200 focus:border-blue-500 focus:ring-0 outline-none transition font-semibold text-sm">
+                    </div>
+                    <button onclick="handleCheckStatus()" class="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-transform hover:-translate-y-0.5 text-sm flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-magnifying-glass"></i> <span>Cari Data Pendaftaran</span>
+                    </button>
+                </div>
+
+                <!-- Hasil Pencarian Container (Hidden by default) -->
+                <div id="status-result" class="hidden mt-8 border-t-2 border-gray-100 pt-6 space-y-6">
+                    <div id="card-bukti" class="bg-gradient-to-tr from-slate-50 to-slate-100 rounded-2xl p-6 border-2 border-slate-200 card-shadow relative overflow-hidden">
+                        
+                        <!-- Watermark Status -->
+                        <div id="watermark-status" class="absolute right-[-20px] top-[20px] rotate-12 text-6xl font-black uppercase opacity-10 select-none">
+                            PENDING
+                        </div>
+
+                        <!-- Header Kartu -->
+                        <div class="flex items-center justify-between border-b pb-4 mb-4">
+                            <div class="flex items-center space-x-2">
+                                <i class="fa-solid fa-graduation-cap text-emerald-600 text-xl"></i>
+                                <span class="font-extrabold text-xs text-slate-800 uppercase tracking-wider">KARTU SPMB SMKN 1 AIMERE</span>
+                            </div>
+                            <span id="label-status" class="bg-amber-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase">
+                                PENDING
+                            </span>
+                        </div>
+
+                        <!-- Data Detail -->
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div class="space-y-1">
+                                <span class="text-gray-400 font-bold uppercase block">KODE PENDAFTARAN</span>
+                                <span id="out-kode" class="font-extrabold text-slate-900 text-sm">SPMB-2026-XXXX</span>
+                            </div>
+                            <div class="space-y-1">
+                                <span class="text-gray-400 font-bold uppercase block">JURUSAN PILIHAN</span>
+                                <span id="out-jurusan" class="font-extrabold text-slate-900">Agribisnis Pertanian</span>
+                            </div>
+                            <div class="space-y-1">
+                                <span class="text-gray-400 font-bold uppercase block">NAMA LENGKAP</span>
+                                <span id="out-nama" class="font-extrabold text-slate-900 text-sm">Nama Calon Siswa</span>
+                            </div>
+                            <div class="space-y-1">
+                                <span class="text-gray-400 font-bold uppercase block">ASAL SEKOLAH</span>
+                                <span id="out-smp" class="font-semibold text-slate-800">SMP Asal</span>
+                            </div>
+                            <div class="space-y-1">
+                                <span class="text-gray-400 font-bold uppercase block">NISN / NIK</span>
+                                <span id="out-nisn-nik" class="font-semibold text-slate-800">000000 / 000000</span>
+                            </div>
+                            <div class="space-y-1">
+                                <span class="text-gray-400 font-bold uppercase block">TANGGAL DAFTAR</span>
+                                <span id="out-tanggal" class="font-semibold text-gray-600">YYYY-MM-DD</span>
+                            </div>
+                            <div class="space-y-1 col-span-2">
+                                <span class="text-gray-400 font-bold uppercase block">ALAMAT DOMISILI</span>
+                                <span id="out-domisili" class="font-semibold text-gray-700 block">Alamat Domisili Lengkap</span>
+                            </div>
+                        </div>
+
+                        <!-- Info Boarding House -->
+                        <div class="mt-4 p-2 bg-white/80 rounded-xl border border-gray-100 flex justify-between items-center text-xs">
+                            <span class="font-extrabold text-gray-500">Mendaftar Tinggal di Asrama:</span>
+                            <span id="out-asrama" class="font-black text-slate-900">Ya</span>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Print / Download -->
+                    <button onclick="printCard()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 px-6 rounded-xl transition-colors text-sm flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-print"></i> <span>Cetak Kartu Pendaftaran</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 4: ADMIN DASHBOARD (TERPROTEKSI) ================= -->
+        <section id="view-admin" class="view-section hidden space-y-6 animate-fadeIn">
+            
+            <!-- Statistik Ringkas -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Stat 1: Total Pendaftar -->
+                <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white p-5 rounded-2xl card-shadow flex items-center justify-between">
+                    <div class="space-y-1">
+                        <span class="text-xs text-blue-100 font-extrabold uppercase">Total Daftar</span>
+                        <h4 id="stat-total" class="text-3xl font-black">0</h4>
+                    </div>
+                    <div class="text-4xl opacity-35"><i class="fa-solid fa-users"></i></div>
+                </div>
+                <!-- Stat 2: Jurusan Pertanian -->
+                <div class="bg-gradient-to-br from-emerald-600 to-emerald-700 text-white p-5 rounded-2xl card-shadow flex items-center justify-between">
+                    <div class="space-y-1">
+                        <span class="text-xs text-emerald-100 font-extrabold uppercase">Kehutanan / Tani</span>
+                        <h4 id="stat-pertanian" class="text-3xl font-black">0</h4>
+                    </div>
+                    <div class="text-4xl opacity-35"><i class="fa-solid fa-seedling"></i></div>
+                </div>
+                <!-- Stat 3: Jurusan Peternakan -->
+                <div class="bg-gradient-to-br from-indigo-600 to-indigo-700 text-white p-5 rounded-2xl card-shadow flex items-center justify-between">
+                    <div class="space-y-1">
+                        <span class="text-xs text-indigo-100 font-extrabold uppercase">Ternak</span>
+                        <h4 id="stat-peternakan" class="text-3xl font-black">0</h4>
+                    </div>
+                    <div class="text-4xl opacity-35"><i class="fa-solid fa-cow"></i></div>
+                </div>
+                <!-- Stat 4: Memilih Asrama -->
+                <div class="bg-gradient-to-br from-purple-600 to-purple-700 text-white p-5 rounded-2xl card-shadow flex items-center justify-between">
+                    <div class="space-y-1">
+                        <span class="text-xs text-purple-100 font-extrabold uppercase">Tinggal Asrama</span>
+                        <h4 id="stat-asrama" class="text-3xl font-black">0</h4>
+                    </div>
+                    <div class="text-4xl opacity-35"><i class="fa-solid fa-hotel"></i></div>
+                </div>
+            </div>
+
+            <!-- Panel Filter & Kontrol Tabel -->
+            <div class="bg-white rounded-2xl p-6 card-shadow space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg font-extrabold text-slate-900">Kelola Data Calon Siswa Baru</h3>
+                        <p class="text-xs text-gray-500 font-medium">Panitia dapat memverifikasi status kelulusan secara real-time.</p>
+                    </div>
+                    <!-- Pencarian & Filter -->
+                    <div class="flex flex-wrap gap-2">
+                        <input type="text" id="admin-search-input" onkeyup="filterAdminTable()" placeholder="Cari Nama/NISN/Sekolah..." class="px-4 py-2 rounded-xl border border-gray-300 text-xs font-semibold focus:border-emerald-500 outline-none w-52">
+                        <select id="admin-filter-jurusan" onchange="filterAdminTable()" class="px-3 py-2 rounded-xl border border-gray-300 text-xs font-semibold bg-white outline-none">
+                            <option value="">Semua Jurusan</option>
+                            <option value="Tanaman">Agribisnis Tanaman</option>
+                            <option value="Ternak">Agribisnis Ternak</option>
+                            <option value="Visual">DKV</option>
+                            <option value="Otomotif">Otomotif</option>
+                            <option value="Konstruksi">Teknik Konstruksi</option>
+                        </select>
+                        <select id="admin-filter-status" onchange="filterAdminTable()" class="px-3 py-2 rounded-xl border border-gray-300 text-xs font-semibold bg-white outline-none">
+                            <option value="">Semua Status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Diterima">Diterima</option>
+                            <option value="Cadangan">Cadangan</option>
+                            <option value="Ditolak">Ditolak</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tabel Data Pendaftar (Responsive overflow) -->
+                <div class="overflow-x-auto rounded-xl border border-gray-100">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100 text-slate-700 text-xs font-black uppercase border-b border-gray-200">
+                                <th class="p-4">Kode/Tgl</th>
+                                <th class="p-4">Calon Siswa</th>
+                                <th class="p-4">Asal SMP</th>
+                                <th class="p-4">Pilihan Jurusan</th>
+                                <th class="p-4">Asrama</th>
+                                <th class="p-4 text-center">Status</th>
+                                <th class="p-4 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-admin-body" class="text-xs font-semibold divide-y divide-gray-100">
+                            <!-- Diisi via JavaScript secara dinamis -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-6 border-t border-slate-800 mt-auto">
+        <div class="container mx-auto px-4 text-center space-y-2">
+            <p class="text-sm font-extrabold">© 2026 SMKN 1 Aimere. All Rights Reserved.</p>
+            <p class="text-xs text-gray-400">Kompetensi Keahlian Unggulan: Pertanian Lestari, Peternakan Terpadu, Teknik Industri & Desain Kreatif.</p>
+        </div>
+    </footer>
+
+    <!-- ================= MODAL 1: PORTAL LOGIN ADMIN ================= -->
+    <div id="login-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-white rounded-3xl p-6 md:p-8 w-full max-w-md card-shadow border border-gray-100 space-y-6 relative animate-fadeIn">
+            
+            <button onclick="closeLoginModal()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 focus:outline-none">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <div class="text-center space-y-1.5">
+                <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto text-xl">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="text-xl font-black text-slate-950">Portal Autentikasi Panitia</h3>
+                <p class="text-xs text-gray-500 font-semibold">Silakan masuk menggunakan kredensial sistem Anda.</p>
+            </div>
+
+            <form id="form-login" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div class="space-y-1.5">
+                    <label class="text-xs font-extrabold text-gray-600 block uppercase">Username</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" name="username" required placeholder="Contoh: admin" class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold outline-none focus:border-emerald-500 text-slate-800">
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-xs font-extrabold text-gray-600 block uppercase">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        <input type="password" name="password" required placeholder="••••••••" class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold outline-none focus:border-emerald-500 text-slate-800">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-2.5 px-4 rounded-xl shadow-lg transition-transform hover:-translate-y-0.5 text-sm flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i> <span>Verifikasi & Masuk</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 2: NOTIFIKASI CUSTOM (NO ALERT) ================= -->
+    <div id="notif-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 z-[200] hidden">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm card-shadow border border-gray-100 text-center space-y-4 animate-scaleUp">
+            <div id="notif-icon" class="w-16 h-16 rounded-full flex items-center justify-center mx-auto text-3xl shadow-inner">
+                <!-- Diisi via JS -->
+            </div>
+            <div class="space-y-1">
+                <h4 id="notif-title" class="text-lg font-black text-slate-900">Judul Pesan</h4>
+                <p id="notif-message" class="text-xs text-gray-500 font-medium leading-relaxed">Isi pesan informasi detail tindakan.</p>
+            </div>
+            <button onclick="closeNotif()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold py-2.5 rounded-xl text-xs transition-colors">
+                Tutup Pesan
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ENGINE ================= -->
+    <script>
+        // Status login admin
+        let isAdminLoggedIn = false;
+
+        // Inisialisasi awal pada saat halaman dimuat
+        window.onload = function() {
+            // Evaluasi badge preview
+            const previewBadge = document.getElementById('preview-badge');
+            if (!IS_PREVIEW) {
+                previewBadge.classList.add('hidden');
+            }
+            
+            // Atur default view
+            switchView('view-beranda');
+        };
+
+        // Fungsi berpindah halaman (Tabs)
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(viewId).classList.remove('hidden');
+
+            // Set background aktif pada button navigasi
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white/30');
+                btn.classList.add('bg-white/15');
+            });
+            
+            // Deteksi penyesuaian jika Admin Dashboard diakses
+            if (viewId === 'view-admin') {
+                loadAdminData();
+            }
+            
+            // Sembunyikan menu mobile pada screen kecil setelah klik
+            document.getElementById('nav-menu').classList.add('hidden');
+        }
+
+        // Toggle Navbar Mobile
+        function toggleMobileMenu() {
+            const menu = document.getElementById('nav-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Custom Notification Handler
+        function showNotif(type, title, message) {
+            const modal = document.getElementById('notif-modal');
+            const iconDiv = document.getElementById('notif-icon');
+            const titleEl = document.getElementById('notif-title');
+            const msgEl = document.getElementById('notif-message');
+
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+
+            if (type === 'success') {
+                iconDiv.className = "w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-3xl shadow-inner";
+                iconDiv.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+            } else if (type === 'error') {
+                iconDiv.className = "w-16 h-16 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto text-3xl shadow-inner";
+                iconDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            } else {
+                iconDiv.className = "w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto text-3xl shadow-inner";
+                iconDiv.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        // Menutup Notifikasi
+        function closeNotif() {
+            document.getElementById('notif-modal').classList.add('hidden');
+        }
+
+        // Modal Login Controller
+        function openLoginModal() {
+            if (isAdminLoggedIn) {
+                switchView('view-admin');
+            } else {
+                document.getElementById('login-modal').classList.remove('hidden');
+            }
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        // Autentikasi Administrator
+        function handleLoginSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const u = form.username.value.trim();
+            const p = form.password.value.trim();
+
+            if (IS_PREVIEW) {
+                // Logika Verifikasi Dummy (Sesuai instruksi)
+                if ((u === 'admin' && p === 'edudigital') || (u === 'admin' && p === 'admin2026')) {
+                    loginSuccess(u);
+                } else {
+                    showNotif('error', 'Login Gagal', 'Username atau password yang Anda masukkan salah!');
+                }
+            } else {
+                // Query ke Server Google Sheets (GAS)
+                showGlobalLoading(true);
+                const payload = {
+                    action: 'adminLogin',
+                    username: u,
+                    password: p
+                };
+
+                fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    showGlobalLoading(false);
+                    if (data.status === 'success') {
+                        loginSuccess(u);
+                    } else {
+                        showNotif('error', 'Akses Ditolak', data.message || 'Kredensial salah!');
+                    }
+                })
+                .catch(err => {
+                    showGlobalLoading(false);
+                    showNotif('error', 'Gangguan Jaringan', 'Terjadi error saat menghubungi server GAS.');
+                });
+            }
+        }
+
+        function loginSuccess(role) {
+            isAdminLoggedIn = true;
+            closeLoginModal();
+            document.getElementById('btn-login-trigger').classList.add('hidden');
+            document.getElementById('btn-logout').classList.remove('hidden');
+            showNotif('success', 'Autentikasi Sukses', `Selamat datang kembali, ${role}!`);
+            switchView('view-admin');
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            document.getElementById('btn-login-trigger').classList.remove('hidden');
+            document.getElementById('btn-logout').classList.add('hidden');
+            showNotif('info', 'Logout Berhasil', 'Sesi admin Anda telah ditutup.');
+            switchView('view-beranda');
+        }
+
+        // Pengolahan data submit pendaftaran baru
+        function handleRegistrationSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            
+            // Buat kode pendaftaran unik
+            const randCode = "SPMB-2026-" + Math.floor(1000 + Math.random() * 9000);
+            const rawDate = new Date();
+            const formattedDate = rawDate.toISOString().replace('T', ' ').substring(0, 19);
+
+            // Dapatkan seluruh nilai input form
+            const regData = {
+                id: randCode,
+                jurusan: form.jurusan.value,
+                nama: form.nama.value.trim(),
+                smp: form.smp.value.trim(),
+                nisn: form.nisn.value.trim(),
+                nik: form.nik.value.trim(),
+                tempat_lahir: form.tempat_lahir.value.trim(),
+                tanggal_lahir: form.tanggal_lahir.value,
+                gender: form.gender.value,
+                agama: form.agama.value,
+                darah: form.darah.value,
+                tinggi: form.tinggi.value,
+                berat: form.berat.value,
+                domisili: form.domisili.value.trim(),
+                ayah: form.ayah.value.trim(),
+                pekerjaan_ayah: form.pekerjaan_ayah.value.trim(),
+                ibu: form.ibu.value.trim(),
+                pekerjaan_ibu: form.pekerjaan_ibu.value.trim(),
+                telpon: form.telpon.value.trim(),
+                alamat_ortu: form.alamat_ortu.value.trim(),
+                hobi: form.hobi.value.trim(),
+                asrama: form.asrama.value,
+                status: 'Pending',
+                tanggal_daftar: formattedDate
+            };
+
+            if (IS_PREVIEW) {
+                // Jalankan penyimpanan di database lokal
+                const currentDB = JSON.parse(localStorage.getItem('spmb_db')) || [];
+                currentDB.push(regData);
+                localStorage.setItem('spmb_db', JSON.stringify(currentDB));
+
+                form.reset();
+                showNotif('success', 'Registrasi Sukses (Lokal)', `Pendaftaran Anda telah direkam secara lokal. Kode Pendaftaran: ${randCode}.`);
+                
+                // Buka tab cek status & langsung isikan kode pencariannya
+                switchView('view-status');
+                document.getElementById('status-search-key').value = randCode;
+                handleCheckStatus();
+            } else {
+                // Koneksikan langsung ke Google Apps Script (GAS)
+                showGlobalLoading(true);
+                const payload = {
+                    action: 'registerStudent',
+                    data: regData
+                };
+
+                fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(response => {
+                    showGlobalLoading(false);
+                    if (response.status === 'success') {
+                        form.reset();
+                        showNotif('success', 'Registrasi Sukses', `Pendaftaran berhasil disimpan ke Google Sheet! Kode Pendaftaran: ${randCode}`);
+                        switchView('view-status');
+                        document.getElementById('status-search-key').value = randCode;
+                        handleCheckStatus();
+                    } else {
+                        showNotif('error', 'Registrasi Gagal', response.message || 'Gagal merekam data ke server.');
+                    }
+                })
+                .catch(err => {
+                    showGlobalLoading(false);
+                    showNotif('error', 'Error Sistem', 'Terjadi kegagalan koneksi ke endpoint Google WebApp.');
+                });
+            }
+        }
+
+        // Cari status dan cetak kartu pendaftar
+        function handleCheckStatus() {
+            const key = document.getElementById('status-search-key').value.trim();
+            if (!key) {
+                showNotif('error', 'Format Salah', 'Harap masukkan Kode Pendaftaran atau NISN yang sah!');
+                return;
+            }
+
+            if (IS_PREVIEW) {
+                const db = JSON.parse(localStorage.getItem('spmb_db')) || [];
+                const found = db.find(item => item.id.toLowerCase() === key.toLowerCase() || item.nisn === key);
+                
+                if (found) {
+                    renderStatusResult(found);
+                } else {
+                    showNotif('error', 'Tidak Ditemukan', 'Data pendaftaran dengan NISN/Kode tersebut tidak terdaftar di sistem lokal.');
+                    document.getElementById('status-result').classList.add('hidden');
+                }
+            } else {
+                showGlobalLoading(true);
+                fetch(`${GAS_URL}?action=checkStatus&key=${key}`)
+                .then(res => res.json())
+                .then(data => {
+                    showGlobalLoading(false);
+                    if (data.status === 'success' && data.data) {
+                        renderStatusResult(data.data);
+                    } else {
+                        showNotif('error', 'Tidak Ditemukan', 'Data tidak ditemukan di database Google Sheets.');
+                        document.getElementById('status-result').classList.add('hidden');
+                    }
+                })
+                .catch(err => {
+                    showGlobalLoading(false);
+                    showNotif('error', 'Error Jaringan', 'Gagal memproses pengecekan status ke Google Apps Script.');
+                });
+            }
+        }
+
+        // Tampilkan element struktur status pendaftaran
+        function renderStatusResult(student) {
+            document.getElementById('status-result').classList.remove('hidden');
+            
+            document.getElementById('out-kode').textContent = student.id;
+            document.getElementById('out-jurusan').textContent = student.jurusan;
+            document.getElementById('out-nama').textContent = student.nama;
+            document.getElementById('out-smp').textContent = student.smp;
+            document.getElementById('out-nisn-nik').textContent = `${student.nisn} / ${student.nik}`;
+            document.getElementById('out-tanggal').textContent = student.tanggal_daftar;
+            document.getElementById('out-domisili').textContent = student.domisili;
+            document.getElementById('out-asrama').textContent = student.asrama;
+
+            // Atur badge warna status kelolosan
+            const statusLabel = document.getElementById('label-status');
+            const watermark = document.getElementById('watermark-status');
+            
+            statusLabel.textContent = student.status.toUpperCase();
+            watermark.textContent = student.status.toUpperCase();
+
+            // Set styling warna dinamis berdasarkan status kelolosan
+            if (student.status === 'Diterima') {
+                statusLabel.className = "bg-emerald-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase";
+                watermark.className = "absolute right-[-20px] top-[20px] rotate-12 text-6xl font-black uppercase opacity-10 select-none text-emerald-600";
+            } else if (student.status === 'Cadangan') {
+                statusLabel.className = "bg-amber-500 text-slate-900 text-xs font-black px-3 py-1 rounded-full uppercase";
+                watermark.className = "absolute right-[-20px] top-[20px] rotate-12 text-6xl font-black uppercase opacity-10 select-none text-amber-500";
+            } else if (student.status === 'Ditolak') {
+                statusLabel.className = "bg-rose-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase";
+                watermark.className = "absolute right-[-20px] top-[20px] rotate-12 text-6xl font-black uppercase opacity-10 select-none text-rose-600";
+            } else {
+                statusLabel.className = "bg-slate-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase";
+                watermark.className = "absolute right-[-20px] top-[20px] rotate-12 text-6xl font-black uppercase opacity-10 select-none text-slate-500";
+            }
+        }
+
+        // Fungsi Cetak / Print Bukti Pendaftaran
+        function printCard() {
+            const printContent = document.getElementById('card-bukti').innerHTML;
+            const originalContent = document.body.innerHTML;
+
+            document.body.innerHTML = `
+                <div class="p-8 bg-white max-w-xl mx-auto" style="font-family: 'Poppins', sans-serif;">
+                    <div class="text-center mb-6">
+                        <h2 class="text-xl font-bold">SMKN 1 AIMERE</h2>
+                        <p class="text-xs">Sistem Penerimaan Murid Baru - Bukti Pendaftaran</p>
+                    </div>
+                    <div style="border: 2px solid #ccc; padding: 20px; border-radius: 10px; position: relative;">
+                        ${printContent}
+                    </div>
+                </div>
+            `;
+            window.print();
+            
+            // Kembalikan ke layout UI semula setelah dicetak
+            document.body.innerHTML = originalContent;
+            window.location.reload(); // Refresh total untuk merekatkan kembali listener binding JS
+        }
+
+        // Membaca data list pendaftar dari lokal maupun GAS
+        function loadAdminData() {
+            if (IS_PREVIEW) {
+                const db = JSON.parse(localStorage.getItem('spmb_db')) || [];
+                renderAdminStatsAndTable(db);
+            } else {
+                showGlobalLoading(true);
+                fetch(`${GAS_URL}?action=getAdminData`)
+                .then(res => res.json())
+                .then(data => {
+                    showGlobalLoading(false);
+                    if (data.status === 'success') {
+                        renderAdminStatsAndTable(data.data);
+                    }
+                })
+                .catch(err => {
+                    showGlobalLoading(false);
+                    showNotif('error', 'Koneksi Gagal', 'Gagal memuat list data dari backend GAS.');
+                });
+            }
+        }
+
+        // Kalkulasi Statistik dan Cetak Rows Tabel Panel Admin
+        function renderAdminStatsAndTable(dataList) {
+            // Kalkulasi data statistik widget
+            const total = dataList.length;
+            const pertanian = dataList.filter(item => 
+                item.jurusan.includes('Tanaman') || item.jurusan.includes('Hortikultura') || item.jurusan.includes('Perkebunan')
+            ).length;
+            const peternakan = dataList.filter(item => item.jurusan.includes('Ternak')).length;
+            const asrama = dataList.filter(item => item.asrama === 'Ya').length;
+
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-pertanian').textContent = pertanian;
+            document.getElementById('stat-peternakan').textContent = peternakan;
+            document.getElementById('stat-asrama').textContent = asrama;
+
+            // Gambar baris tabel
+            const tbody = document.getElementById('table-admin-body');
+            tbody.innerHTML = '';
+
+            if (dataList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-gray-400 font-bold">Belum ada data pendaftar masuk.</td></tr>`;
+                return;
+            }
+
+            dataList.forEach(item => {
+                let statusColor = "bg-slate-100 text-slate-800";
+                if (item.status === 'Diterima') statusColor = "bg-emerald-100 text-emerald-800";
+                if (item.status === 'Cadangan') statusColor = "bg-amber-100 text-amber-800";
+                if (item.status === 'Ditolak') statusColor = "bg-rose-100 text-rose-800";
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50/80 transition-colors border-b border-gray-100" data-nama="${item.nama.toLowerCase()}" data-nisn="${item.nisn}" data-smp="${item.smp.toLowerCase()}" data-jurusan="${item.jurusan}" data-status="${item.status}">
+                        <td class="p-4">
+                            <span class="font-extrabold text-slate-900 block">${item.id}</span>
+                            <span class="text-[10px] text-gray-400 font-semibold block">${item.tanggal_daftar}</span>
+                        </td>
+                        <td class="p-4">
+                            <span class="font-black text-slate-900 text-sm block">${item.nama}</span>
+                            <span class="text-[10px] text-gray-500 font-bold block">NISN: ${item.nisn} | NIK: ${item.nik} | Telp: ${item.telpon}</span>
+                        </td>
+                        <td class="p-4 text-slate-700">${item.smp}</td>
+                        <td class="p-4 font-bold text-slate-700 max-w-[200px] truncate">${item.jurusan}</td>
+                        <td class="p-4 text-center">
+                            <span class="px-2.5 py-1 rounded-md text-[10px] font-black ${item.asrama === 'Ya' ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-500'}">
+                                ${item.asrama}
+                            </span>
+                        </td>
+                        <td class="p-4 text-center">
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase ${statusColor}">
+                                ${item.status}
+                            </span>
+                        </td>
+                        <td class="p-4 text-center">
+                            <div class="flex items-center justify-center space-x-1.5">
+                                <select onchange="updateStudentStatus('${item.id}', this.value)" class="text-[10px] bg-white border border-gray-300 rounded px-1 py-1 font-bold outline-none cursor-pointer">
+                                    <option value="" disabled selected>Ubah Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Diterima">Diterima</option>
+                                    <option value="Cadangan">Cadangan</option>
+                                    <option value="Ditolak">Ditolak</option>
+                                </select>
+                                <button onclick="deleteStudent('${item.id}')" class="text-rose-600 hover:text-rose-900 bg-rose-50 hover:bg-rose-100 p-1.5 rounded transition" title="Hapus">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Filter baris tabel panel admin berdasarkan parameter pencarian
+        function filterAdminTable() {
+            const query = document.getElementById('admin-search-input').value.toLowerCase();
+            const filterJurusan = document.getElementById('admin-filter-jurusan').value;
+            const filterStatus = document.getElementById('admin-filter-status').value;
+            const rows = document.querySelectorAll('#table-admin-body tr');
+
+            rows.forEach(row => {
+                if (row.cells.length < 3) return; // Lewati row kosong penanda data kosong
+
+                const name = row.getAttribute('data-nama') || '';
+                const nisn = row.getAttribute('data-nisn') || '';
+                const smp = row.getAttribute('data-smp') || '';
+                const jurusan = row.getAttribute('data-jurusan') || '';
+                const status = row.getAttribute('data-status') || '';
+
+                const matchesSearch = name.includes(query) || nisn.includes(query) || smp.includes(query);
+                
+                let matchesJurusan = true;
+                if (filterJurusan === 'Pertanian') matchesJurusan = (jurusan.includes('Tanaman') || jurusan.includes('Hortikultura') || jurusan.includes('Perkebunan'));
+                if (filterJurusan === 'Peternakan') matchesJurusan = jurusan.includes('Ternak');
+                if (filterJurusan === 'Visual') matchesJurusan = jurusan.includes('Visual');
+                if (filterJurusan === 'Otomotif') matchesJurusan = jurusan.includes('Otomotif');
+                if (filterJurusan === 'Konstruksi') matchesJurusan = jurusan.includes('Konstruksi');
+
+                const matchesStatus = filterStatus === '' || status === filterStatus;
+
+                if (matchesSearch && matchesJurusan && matchesStatus) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        }
+
+        // Perbarui status pendaftar
+        function updateStudentStatus(id, newStatus) {
+            if (IS_PREVIEW) {
+                const db = JSON.parse(localStorage.getItem('spmb_db')) || [];
+                const idx = db.findIndex(item => item.id === id);
+                if (idx !== -1) {
+                    db[idx].status = newStatus;
+                    localStorage.setItem('spmb_db', JSON.stringify(db));
+                    showNotif('success', 'Status Diperbarui', `Status pendaftaran siswa ${id} berhasil diubah menjadi ${newStatus}.`);
+                    loadAdminData();
+                }
+            } else {
+                showGlobalLoading(true);
+                const payload = {
+                    action: 'updateStatus',
+                    id: id,
+                    status: newStatus
+                };
+
+                fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    showGlobalLoading(false);
+                    if (data.status === 'success') {
+                        showNotif('success', 'Berhasil', `Status pendaftaran ${id} telah diubah di Google Sheet.`);
+                        loadAdminData();
+                    } else {
+                        showNotif('error', 'Gagal', data.message || 'Gagal mengubah status pendaftar.');
+                    }
+                })
+                .catch(err => {
+                    showGlobalLoading(false);
+                    showNotif('error', 'Kesalahan', 'Gagal menghubungi server Google.');
+                });
+            }
+        }
+
+        // Hapus entri pendaftar
+        function deleteStudent(id) {
+            if (!confirm(`Apakah Anda yakin ingin menghapus data dengan kode ${id}?`)) {
+                return;
+            }
+
+            if (IS_PREVIEW) {
+                let db = JSON.parse(localStorage.getItem('spmb_db')) || [];
+                db = db.filter(item => item.id !== id);
+                localStorage.setItem('spmb_db', JSON.stringify(db));
+                showNotif('success', 'Data Terhapus', `Data pendaftar ${id} berhasil dihapus dari browser lokal.`);
+                loadAdminData();
+            } else {
+                showGlobalLoading(true);
+                const payload = {
+                    action: 'deleteStudent',
+                    id: id
+                };
+
+                fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    showGlobalLoading(false);
+                    if (data.status === 'success') {
+                        showNotif('success', 'Berhasil Dihapus', `Data pendaftar ${id} dihapus dari Google Sheet.`);
+                        loadAdminData();
+                    } else {
+                        showNotif('error', 'Gagal', data.message || 'Gagal menghapus entri.');
+                    }
+                })
+                .catch(err => {
+                    showGlobalLoading(false);
+                    showNotif('error', 'Gangguan Jaringan', 'Gagal menghubungkan sistem ke database.');
+                });
+            }
+        }
+
+        // Launcher Global Loader Sederhana
+        function showGlobalLoading(show) {
+            let loader = document.getElementById('global-loader');
+            if (!loader) {
+                loader = document.createElement('div');
+                loader.id = 'global-loader';
+                loader.className = "fixed inset-0 bg-slate-950/40 backdrop-blur-xs flex items-center justify-center z-[300]";
+                loader.innerHTML = `
+                    <div class="bg-white p-6 rounded-2xl shadow-xl flex items-center space-x-3 border border-gray-100">
+                        <svg class="animate-spin h-5 w-5 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span class="text-xs font-black text-slate-800">Menghubungi Server Google Sheets...</span>
+                    </div>
+                `;
+                document.body.appendChild(loader);
+            }
+            if (show) {
+                loader.classList.remove('hidden');
+            } else {
+                loader.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
