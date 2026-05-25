@@ -901,127 +901,49 @@
         </section>
 
     </main>
-        <!-- LEAFLET MAP SEKOLAH -->
+<!-- LEAFLET CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<!-- ROUTING CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"/>
 
 <style>
     #map {
-        height: 320px;
+        height: 450px;
         width: 100%;
-        border-radius: 1.5rem;
+        border-radius: 24px;
         z-index: 1;
     }
 
-    /* Pulse Marker */
-    .pulse-marker {
-        width: 20px;
-        height: 20px;
-        background: #2563eb;
-        border-radius: 50%;
-        position: relative;
-        border: 3px solid white;
-        animation: pulse 2s infinite;
-        box-shadow: 0 0 0 rgba(37,99,235,0.4);
-    }
-
-    .pulse-marker::after {
-        content: "";
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        top: -3px;
-        left: -3px;
-        border-radius: 50%;
-        border: 3px solid #2563eb;
-        animation: pulseRing 2s infinite;
-    }
-
-    @keyframes pulse {
-        0% {
-            transform: scale(0.95);
-        }
-        70% {
-            transform: scale(1);
-        }
-        100% {
-            transform: scale(0.95);
-        }
-    }
-
-    @keyframes pulseRing {
-        0% {
-            transform: scale(1);
-            opacity: 1;
-        }
-        100% {
-            transform: scale(2.5);
-            opacity: 0;
-        }
-    }
-
-    /* Label Sekolah */
     .school-label {
         background: white;
-        padding: 6px 12px;
+        padding: 6px 14px;
         border-radius: 999px;
-        font-weight: 700;
+        font-weight: bold;
         color: #1e293b;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         border: 1px solid #e2e8f0;
         white-space: nowrap;
     }
 
-    /* Tombol Navigasi */
-    .navigate-btn{
-        position:absolute;
-        bottom:20px;
-        right:20px;
-        z-index:999;
-        background:#2563eb;
-        color:white;
-        padding:12px 18px;
-        border-radius:999px;
-        font-weight:700;
-        text-decoration:none;
-        box-shadow:0 8px 20px rgba(37,99,235,0.35);
-        transition:0.3s;
-        font-size:14px;
-    }
-
-    .navigate-btn:hover{
-        transform:translateY(-2px) scale(1.03);
-        background:#1d4ed8;
+    .leaflet-routing-container {
+        display: none;
     }
 </style>
 
 <!-- MAP SEKOLAH -->
-<div class="bg-white rounded-3xl p-6 md:p-8 card-shadow space-y-4">
+<div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl space-y-4">
 
-    <h3 class="text-lg md:text-xl font-black text-slate-800 flex items-center space-x-2">
-        <span class="w-2.5 h-6 bg-blue-600 rounded-full inline-block"></span>
-        <span>📍 Lokasi Sekolah SMKN 1 Aimere</span>
+    <h3 class="text-xl font-black text-slate-800">
+        📍 Lokasi SMKN 1 Aimere
     </h3>
 
-    <p class="text-xs text-gray-500 font-semibold">
-        <i class="fa-solid fa-map-location-dot text-emerald-600 mr-1"></i>
-        Jl. Trans Flores, Cabang Paukate - Ds. Keligejo - Kec. Aimere,
-        Kabupaten Ngada, Nusa Tenggara Timur (NTT).
+    <p class="text-sm text-gray-500">
+        Jl. Trans Flores, Cabang Paukate - Aimere, Ngada, NTT
     </p>
 
-    <div class="relative rounded-2xl overflow-hidden border-2 border-gray-100 card-shadow">
-
-        <!-- MAP -->
+    <div class="rounded-3xl overflow-hidden border border-gray-200">
         <div id="map"></div>
-
-        <!-- TOMBOL NAVIGASI -->
-        <a 
-            href="https://www.google.com/maps/dir/?api=1&destination=-8.8435,121.0095"
-            target="_blank"
-            class="navigate-btn"
-        >
-            🧭 Navigasi
-        </a>
-
     </div>
 
 </div>
@@ -1029,61 +951,30 @@
 <!-- LEAFLET JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+<!-- ROUTING JS -->
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
 <script>
 
-    // KOORDINAT SEKOLAH
-    const sekolah = [-8.8435, 121.0095];
+    // KOORDINAT SEKOLAH (UBAH JIKA ADA KOORDINAT LEBIH AKURAT)
+    const sekolah = L.latLng(-8.8435, 121.0095);
 
-    // INISIALISASI MAP
-    const map = L.map('map').setView(sekolah, 15);
+    // MAP
+    const map = L.map('map').setView(sekolah, 14);
 
-    // TILE MAP
+    // TILE
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap Contributors'
+        attribution: '&copy; OpenStreetMap'
     }).addTo(map);
-
-    // ICON PULSE
-    const pulseIcon = L.divIcon({
-        className: '',
-        html: `<div class="pulse-marker"></div>`,
-        iconSize: [20, 20],
-        iconAnchor: [10, 10]
-    });
 
     // MARKER SEKOLAH
-    const marker = L.marker(sekolah, {
-        icon: pulseIcon
-    }).addTo(map);
+    const schoolMarker = L.marker(sekolah).addTo(map);
 
     // POPUP SEKOLAH
-    marker.bindPopup(`
-        <div style="text-align:center; width:220px;">
-
-            <h3 style="font-weight:bold; font-size:16px; margin-bottom:8px;">
-                🏫 SMKN 1 Aimere
-            </h3>
-
-            <p style="font-size:12px; color:#555; margin-bottom:12px;">
-                Klik tombol di bawah untuk melihat arah menuju sekolah.
-            </p>
-
-            <a 
-                href="https://www.google.com/maps/dir/?api=1&destination=-8.8435,121.0095"
-                target="_blank"
-                style="
-                    display:inline-block;
-                    background:#2563eb;
-                    color:white;
-                    padding:10px 16px;
-                    border-radius:999px;
-                    text-decoration:none;
-                    font-weight:600;
-                    font-size:14px;
-                "
-            >
-                📍 Lihat Arah
-            </a>
-
+    schoolMarker.bindPopup(`
+        <div style="text-align:center;">
+            <strong>🏫 SMKN 1 Aimere</strong><br>
+            Tujuan Navigasi
         </div>
     `).openPopup();
 
@@ -1095,6 +986,61 @@
             iconAnchor: [-20, 30]
         })
     }).addTo(map);
+
+    // AMBIL LOKASI USER
+    navigator.geolocation.getCurrentPosition(function(position){
+
+        const userLocation = L.latLng(
+            position.coords.latitude,
+            position.coords.longitude
+        );
+
+        // MARKER USER
+        L.marker(userLocation)
+            .addTo(map)
+            .bindPopup("📍 Lokasi Anda")
+            .openPopup();
+
+        // ROUTE / JALUR
+        L.Routing.control({
+            waypoints: [
+                userLocation,
+                sekolah
+            ],
+
+            routeWhileDragging: false,
+            draggableWaypoints: false,
+            addWaypoints: false,
+
+            lineOptions: {
+                styles: [
+                    {
+                        color: '#2563eb',
+                        weight: 7,
+                        opacity: 0.9
+                    }
+                ]
+            },
+
+            createMarker: function() {
+                return null;
+            }
+
+        }).addTo(map);
+
+        // FIT SEMUA TITIK
+        const group = new L.featureGroup([
+            L.marker(userLocation),
+            schoolMarker
+        ]);
+
+        map.fitBounds(group.getBounds().pad(0.3));
+
+    }, function(error){
+
+        alert("Lokasi tidak diizinkan. Aktifkan GPS/lokasi browser.");
+
+    });
 
 </script>
     <!-- Footer -->
