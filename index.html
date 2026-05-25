@@ -64,7 +64,7 @@
         // ================= KONFIGURASI APLIKASI =================
         // UBAH IS_PREVIEW KE false JIKA AKAN DI-DEPLOY KE LIVE BLOGGER
         const IS_PREVIEW = false;
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbzVH2gg_75vTHs-VzWJnHQAcKggeE_VE2fZN8kVHEpWbP3Ww136MLNVkU0uBGI2Zy9B/exec";
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbxKoMkk5qa1wCSj0GKXCmWhB1H5P-zd3KRMa4fl_WVGoR3mWbLbCu8GKMl09Zw8M0k/exec";
         // ========================================================
     </script>
 
@@ -422,11 +422,11 @@
                     <div class="bg-white rounded-3xl p-6 md:p-8 card-shadow space-y-4">
                         <h3 class="text-lg md:text-xl font-black text-slate-800 flex items-center space-x-2">
                             <span class="w-2.5 h-6 bg-blue-600 rounded-full inline-block"></span>
-                            <span>📍 Lokasi Sekolah SMKN 1 Aimere</span>
+                            <span>📍Kecamatan Aimere</span>
                         </h3>
                         <p class="text-xs text-gray-500 font-semibold">
                             <i class="fa-solid fa-map-location-dot text-emerald-600 mr-1"></i>
-                            Jl. Trans Flores, Cabang Paukate - Ds. Keligejo - Kec. Aimere, Kabupaten Ngada, Nusa Tenggara Timur (NTT).
+                            Kecamatan Aimere, Kabupaten Ngada, Nusa Tenggara Timur (NTT).
                         </p>
                         <div class="rounded-2xl overflow-hidden border-2 border-gray-100 card-shadow h-72">
                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126131.79246197143!2d120.80373079999999!3d-8.822836249999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2db3390022ff7fdf%3A0xf659b8be923838eb!2sAimere%2C%20Ngada%20Regency%2C%20East%20Nusa%20Tenggara!5e0!3m2!1sen!2sid!4v1716611000000" class="w-full h-full border-0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -901,7 +901,202 @@
         </section>
 
     </main>
+        <!-- LEAFLET MAP SEKOLAH -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
+<style>
+    #map {
+        height: 320px;
+        width: 100%;
+        border-radius: 1.5rem;
+        z-index: 1;
+    }
+
+    /* Pulse Marker */
+    .pulse-marker {
+        width: 20px;
+        height: 20px;
+        background: #2563eb;
+        border-radius: 50%;
+        position: relative;
+        border: 3px solid white;
+        animation: pulse 2s infinite;
+        box-shadow: 0 0 0 rgba(37,99,235,0.4);
+    }
+
+    .pulse-marker::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: -3px;
+        left: -3px;
+        border-radius: 50%;
+        border: 3px solid #2563eb;
+        animation: pulseRing 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(0.95);
+        }
+        70% {
+            transform: scale(1);
+        }
+        100% {
+            transform: scale(0.95);
+        }
+    }
+
+    @keyframes pulseRing {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(2.5);
+            opacity: 0;
+        }
+    }
+
+    /* Label Sekolah */
+    .school-label {
+        background: white;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-weight: 700;
+        color: #1e293b;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border: 1px solid #e2e8f0;
+        white-space: nowrap;
+    }
+
+    /* Tombol Navigasi */
+    .navigate-btn{
+        position:absolute;
+        bottom:20px;
+        right:20px;
+        z-index:999;
+        background:#2563eb;
+        color:white;
+        padding:12px 18px;
+        border-radius:999px;
+        font-weight:700;
+        text-decoration:none;
+        box-shadow:0 8px 20px rgba(37,99,235,0.35);
+        transition:0.3s;
+        font-size:14px;
+    }
+
+    .navigate-btn:hover{
+        transform:translateY(-2px) scale(1.03);
+        background:#1d4ed8;
+    }
+</style>
+
+<!-- MAP SEKOLAH -->
+<div class="bg-white rounded-3xl p-6 md:p-8 card-shadow space-y-4">
+
+    <h3 class="text-lg md:text-xl font-black text-slate-800 flex items-center space-x-2">
+        <span class="w-2.5 h-6 bg-blue-600 rounded-full inline-block"></span>
+        <span>📍 Lokasi Sekolah SMKN 1 Aimere</span>
+    </h3>
+
+    <p class="text-xs text-gray-500 font-semibold">
+        <i class="fa-solid fa-map-location-dot text-emerald-600 mr-1"></i>
+        Jl. Trans Flores, Cabang Paukate - Ds. Keligejo - Kec. Aimere,
+        Kabupaten Ngada, Nusa Tenggara Timur (NTT).
+    </p>
+
+    <div class="relative rounded-2xl overflow-hidden border-2 border-gray-100 card-shadow">
+
+        <!-- MAP -->
+        <div id="map"></div>
+
+        <!-- TOMBOL NAVIGASI -->
+        <a 
+            href="https://www.google.com/maps/dir/?api=1&destination=-8.8435,121.0095"
+            target="_blank"
+            class="navigate-btn"
+        >
+            🧭 Navigasi
+        </a>
+
+    </div>
+
+</div>
+
+<!-- LEAFLET JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+    // KOORDINAT SEKOLAH
+    const sekolah = [-8.8435, 121.0095];
+
+    // INISIALISASI MAP
+    const map = L.map('map').setView(sekolah, 15);
+
+    // TILE MAP
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap Contributors'
+    }).addTo(map);
+
+    // ICON PULSE
+    const pulseIcon = L.divIcon({
+        className: '',
+        html: `<div class="pulse-marker"></div>`,
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+    });
+
+    // MARKER SEKOLAH
+    const marker = L.marker(sekolah, {
+        icon: pulseIcon
+    }).addTo(map);
+
+    // POPUP SEKOLAH
+    marker.bindPopup(`
+        <div style="text-align:center; width:220px;">
+
+            <h3 style="font-weight:bold; font-size:16px; margin-bottom:8px;">
+                🏫 SMKN 1 Aimere
+            </h3>
+
+            <p style="font-size:12px; color:#555; margin-bottom:12px;">
+                Klik tombol di bawah untuk melihat arah menuju sekolah.
+            </p>
+
+            <a 
+                href="https://www.google.com/maps/dir/?api=1&destination=-8.8435,121.0095"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    background:#2563eb;
+                    color:white;
+                    padding:10px 16px;
+                    border-radius:999px;
+                    text-decoration:none;
+                    font-weight:600;
+                    font-size:14px;
+                "
+            >
+                📍 Lihat Arah
+            </a>
+
+        </div>
+    `).openPopup();
+
+    // LABEL SEKOLAH
+    L.marker(sekolah, {
+        icon: L.divIcon({
+            className: '',
+            html: `<div class="school-label">🏫 SMKN 1 Aimere</div>`,
+            iconAnchor: [-20, 30]
+        })
+    }).addTo(map);
+
+</script>
     <!-- Footer -->
     <footer class="bg-slate-900 text-white py-6 border-t border-slate-800 mt-auto">
         <div class="container mx-auto px-4 text-center space-y-2">
@@ -1528,5 +1723,6 @@
             }
         }
     </script>
+
 </body>
 </html>
