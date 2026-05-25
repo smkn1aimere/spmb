@@ -34,6 +34,23 @@
         .card-shadow-bold {
             box-shadow: 0 10px 30px 0 rgba(16, 185, 129, 0.2);
         }
+        /* Sembunyikan navigasi desktop di HP */
+@media (max-width: 768px) {
+  .nav-desktop {
+    display: none;
+  }
+  
+  /* Tampilkan navigasi mobile (atau button hamburger) */
+  .nav-mobile {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #fff;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+  }
+}
     </style>
 </head>
 <body class="text-gray-800 antialiased min-h-screen flex flex-col">
@@ -47,7 +64,7 @@
         // ================= KONFIGURASI APLIKASI =================
         // UBAH IS_PREVIEW KE false JIKA AKAN DI-DEPLOY KE LIVE BLOGGER
         const IS_PREVIEW = false;
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbzvnZyrZ4Xyqc3yZsO3ur29cYd6aNsi0kdCp_b_pdppW_8emAQOqchqBtbenGfhpTWn/exec";
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbw0vSd0HqTUbiFd2Dr_mWHD08H6E3MQ_B5CxE5AKR_XzuNQmHVe0JF74Kq03iF6xOdr/exec";
         // ========================================================
     </script>
 
